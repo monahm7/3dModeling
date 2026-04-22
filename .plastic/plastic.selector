@@ -1,0 +1,4 @@
+repository "3dModeling/3dModeling@5773976404223@cloud"
+  path "/"
+    br "/main"
+    co "/main"
