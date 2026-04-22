@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class MaterialSwithcer : MonoBehaviour
 {
+
     public List<MeshRenderer> renderers;
     public Text materialName;
     public List<Material> materials = new List<Material>();
