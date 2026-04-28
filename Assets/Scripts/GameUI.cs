@@ -1,16 +1,31 @@
 using UnityEngine;
+using TMPro;
 
 public class GameUI : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public static GameUI instance;
+
+    public TextMeshProUGUI coinText;
+    int coins = 0;
+
+    void Awake()
     {
-        
+        instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        
+        UpdateUI();
+    }
+
+    public void AddCoins(int amount)
+    {
+        coins += amount;
+        UpdateUI();
+    }
+
+    void UpdateUI()
+    {
+        coinText.text = "Coins: " + coins;
     }
 }
