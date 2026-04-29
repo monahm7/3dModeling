@@ -10,6 +10,8 @@ public class PlayerMovement : MonoBehaviour
 
     private float verticalVelocity;
     public float gravity = -9.81f;
+    public float jumpHeight = 2f;
+    
 
     void Start()
     {
@@ -31,18 +33,17 @@ public class PlayerMovement : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
-            controller.Move(moveDirection * moveSpeed * Time.deltaTime);
-
-            animator.SetBool("isWalking", true);
+            controller.Move(moveDirection * moveSpeed * Time.deltaTime); 
         }
-        else
-        {
-            animator.SetBool("isWalking", false);
-        }
-
+        
         if (controller.isGrounded && verticalVelocity < 0)
         {
             verticalVelocity = -2f;
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Space) && controller.isGrounded)
+        {
+            verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
 
         verticalVelocity += gravity * Time.deltaTime;
