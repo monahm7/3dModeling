@@ -3,6 +3,7 @@ using UnityEngine;
 public class FatGateTrigger : MonoBehaviour
 {
     public float requiredWeight = 12f;
+    public GameObject weightPopup;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -10,16 +11,9 @@ public class FatGateTrigger : MonoBehaviour
         {
             PlayerStats stats = other.GetComponent<PlayerStats>();
 
-            if (stats != null)
+            if (stats != null && stats.weight >= requiredWeight)
             {
-                if (stats.weight >= requiredWeight)
-                {
-                    Debug.Log("Too heavy! Show popup here.");
-                }
-                else
-                {
-                    Debug.Log("Light enough. Pass.");
-                }
+                weightPopup.SetActive(true);
             }
         }
     }
