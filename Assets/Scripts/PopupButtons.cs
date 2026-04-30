@@ -4,6 +4,7 @@ public class PopupButtons : MonoBehaviour
 {
     public GameObject weightPopup;
     public PlayerStats playerStats;
+    public PlayerMovement playerMovement;
 
     public int coinCost = 8;
     public float weightLoss = 8f;
@@ -11,6 +12,9 @@ public class PopupButtons : MonoBehaviour
     public void ClosePopup()
     {
         weightPopup.SetActive(false);
+
+        if (playerMovement != null)
+            playerMovement.enabled = true;
     }
 
     public void BuyWeightLoss()
@@ -21,5 +25,19 @@ public class PopupButtons : MonoBehaviour
         }
 
         weightPopup.SetActive(false);
+
+        if (playerMovement != null)
+            playerMovement.enabled = true;
+    }
+
+    void Update()
+    {
+        if (!weightPopup.activeSelf) return;
+
+        if (Input.GetKeyDown(KeyCode.Y))
+            BuyWeightLoss();
+
+        if (Input.GetKeyDown(KeyCode.N))
+            ClosePopup();
     }
 }
