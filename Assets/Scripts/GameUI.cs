@@ -24,6 +24,18 @@ public class GameUI : MonoBehaviour
         UpdateUI();
     }
 
+    public bool SpendCoins(int amount)
+    {
+        if (coins >= amount)
+        {
+            coins -= amount;
+            UpdateUI();
+            return true;
+        }
+
+        return false;
+    }
+
     void UpdateUI()
     {
         coinText.text = "Coins: " + coins;

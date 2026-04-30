@@ -14,6 +14,12 @@ public class FatGateTrigger : MonoBehaviour
             if (stats != null && stats.weight >= requiredWeight)
             {
                 weightPopup.SetActive(true);
+
+                PlayerMovement move = other.GetComponent<PlayerMovement>();
+                if (move != null)
+                {
+                    move.enabled = false;
+                }
             }
         }
     }

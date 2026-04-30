@@ -5,6 +5,7 @@ public class PopupButtons : MonoBehaviour
     public GameObject weightPopup;
     public PlayerStats playerStats;
 
+    public int coinCost = 8;
     public float weightLoss = 8f;
 
     public void ClosePopup()
@@ -14,7 +15,11 @@ public class PopupButtons : MonoBehaviour
 
     public void BuyWeightLoss()
     {
-        playerStats.AddWeight(-weightLoss);
+        if (GameUI.instance.SpendCoins(coinCost))
+        {
+            playerStats.AddWeight(-weightLoss);
+        }
+
         weightPopup.SetActive(false);
     }
 }
