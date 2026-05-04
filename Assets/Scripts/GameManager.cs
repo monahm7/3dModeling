@@ -7,9 +7,15 @@ public class GameManager : MonoBehaviour
     public GameObject restartButton;
     public GameObject loseText;
     public GameObject continueButton;
+    public TMPro.TextMeshProUGUI timerText;
     public PlayerMovement playerMovement;
+    public float timerDuration = 45f;
 
     private int needCoinsCount = 0;
+
+    private float currentTimer;
+    private bool timerStarted = false;
+    private bool gameFinished = false;
 
     void Start()
     {
@@ -17,6 +23,8 @@ public class GameManager : MonoBehaviour
         restartButton.SetActive(false);
         loseText.SetActive(false);
         continueButton.SetActive(false);
+        currentTimer = timerDuration;
+        timerText.text = "";
 
         if (playerMovement != null)
             playerMovement.enabled = false;
@@ -57,6 +65,12 @@ public class GameManager : MonoBehaviour
         loseText.SetActive(false);
         continueButton.SetActive(false);
         restartButton.SetActive(false);
+
+         if (!timerStarted)
+        {
+            timerStarted = true;
+        }
+        timerText.text = "Time: " + Mathf.Ceil(currentTimer).ToString();
     }
 
     public void ShowRestart()
@@ -64,8 +78,47 @@ public class GameManager : MonoBehaviour
         restartButton.SetActive(true);
     }
 
+    public void ShowWin()
+    {
+        gameFinished = true;
+
+        loseText.SetActive(false);
+        continueButton.SetActive(false);
+        restartButton.SetActive(false);
+    }
+    void Update()
+    {
+        if (timerStarted && !gameFinished && !loseText.activeSelf)
+        {
+            currentTimer -= Time.deltaTime;
+
+            timerText.text = "Time: " + Mathf.Ceil(currentTimer).ToString();
+
+        if (currentTimer <= 0)
+            {
+                currentTimer = 0;
+                timerText.text = "0";
+                TimerFinished();
+            }
+        }
+    }
+
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    void TimerFinished()
+    {
+        gameFinished = true;
+
+        loseText.SetActive(true);
+        loseText.GetComponent<TMPro.TextMeshProUGUI>().text = "Time's Up! You Lost!";
+
+        continueButton.SetActive(false);
+        restartButton.SetActive(true);
+
+        if (playerMovement != null)
+            playerMovement.enabled = false;
     }
 }

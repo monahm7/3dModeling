@@ -19,7 +19,7 @@ public class FinishTrigger : MonoBehaviour
                 winText.SetActive(true);
 
                 if (gameManager != null)
-                    gameManager.ShowRestart();
+                    gameManager.ShowWin();
             }
             else
             {
