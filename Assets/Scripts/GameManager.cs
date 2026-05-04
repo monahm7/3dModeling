@@ -30,26 +30,38 @@ public class GameManager : MonoBehaviour
             playerMovement.enabled = true;
     }
 
-    public void ShowRestart()
-    {
-        restartButton.SetActive(true);
-    }
-
     public void ShowNeedCoins()
     {
         needCoinsCount++;
 
         loseText.SetActive(true);
-        continueButton.SetActive(true);
 
-        if (needCoinsCount >= 2)
+        if (needCoinsCount < 3)
+        {
+            // First & second time
+            loseText.GetComponent<TMPro.TextMeshProUGUI>().text = "Oops!! Need More Coins!";
+            continueButton.SetActive(true);
+            restartButton.SetActive(false);
+        }
+        else
+        {
+            // Third time → real lose
+            loseText.GetComponent<TMPro.TextMeshProUGUI>().text = "Oops!! You Lost! Need More Coins!";
+            continueButton.SetActive(false);
             restartButton.SetActive(true);
+        }
     }
 
     public void ContinueGame()
     {
         loseText.SetActive(false);
         continueButton.SetActive(false);
+        restartButton.SetActive(false);
+    }
+
+    public void ShowRestart()
+    {
+        restartButton.SetActive(true);
     }
 
     public void RestartGame()
