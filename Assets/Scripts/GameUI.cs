@@ -36,6 +36,11 @@ public class GameUI : MonoBehaviour
         return false;
     }
 
+    public int GetCoins()
+    {
+    return coins;
+    }
+
     void UpdateUI()
     {
         coinText.text = "Coins: " + coins;
