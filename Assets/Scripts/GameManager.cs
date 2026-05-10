@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     public GameObject continueButton;
     public TMPro.TextMeshProUGUI timerText;
     public PlayerMovement playerMovement;
+    public GameObject winCelebration;
+    public ParticleSystem winParticles;
     public float timerDuration = 60f;
 
     private int needCoinsCount = 0;
@@ -85,12 +87,25 @@ public class GameManager : MonoBehaviour
     }
 
     public void ShowWin()
-    {
+   {
+        Debug.Log("SHOW WIN CALLED");
         gameFinished = true;
 
         loseText.SetActive(false);
         continueButton.SetActive(false);
         restartButton.SetActive(false);
+
+        if (winCelebration != null)
+            winCelebration.SetActive(true);
+
+        if (winParticles != null)
+        {
+            winParticles.Clear();
+            winParticles.Play();
+        }
+
+        if (playerMovement != null)
+            playerMovement.enabled = false;
     }
     void Update()
     {
