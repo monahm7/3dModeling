@@ -938,7 +938,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 4867062d290ffb449821f96b62c6ec71, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 725d1e95c367bc4488e91bd6a6b4be9b, type: 2}
+      objectReference: {fileID: 2100000, guid: 3a9f295875fc74c3daf870e55ad301d5, type: 2}
     - target: {fileID: 919132149155446097, guid: 4867062d290ffb449821f96b62c6ec71, type: 3}
       propertyPath: m_Name
       value: wintext
@@ -2578,10 +2578,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WinTextMotion
   targetY: 1.8
-  riseSpeed: 0.4
-  spinSpeed: 12
-  floatAmount: 0.02
-  floatSpeed: 2
+  riseSpeed: 0.1
+  spinSpeed: -15
+  floatAmount: 0.08
+  floatSpeed: 4
 --- !u!1001 &617764757
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9787,6 +9787,8 @@ MonoBehaviour:
   target: {fileID: 1597730774}
   offset: {x: 0, y: 3, z: -3.7}
   smoothSpeed: 2.5
+  birdViewOffset: {x: 0, y: 15, z: 0}
+  birdViewDuration: 3
 --- !u!114 &1184603500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9810,7 +9812,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
