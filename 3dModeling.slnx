@@ -1,5 +1,9 @@
 ﻿<Solution>
   <Project Path="Unity.PlasticSCM.Editor.csproj" />
+<<<<<<< HEAD
+=======
+  <Project Path="Assembly-CSharp.csproj" />
+>>>>>>> 13cc61a1c97188d4d77ca5393bdb19c32280085c
   <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="Unity.CollabProxy.Editor.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
