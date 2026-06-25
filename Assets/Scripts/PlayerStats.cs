@@ -3,12 +3,19 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     public float weight = 0f;
+    public float overweightLimit = 20f;
+    private bool overweightPopupShown = false;
 
     Vector3 startScale;
 
     void Start()
     {
         startScale = transform.localScale;
+    }
+
+    public void ResetOverweightPopup()
+    {
+        overweightPopupShown = false;
     }
 
     public void AddWeight(float amount)
@@ -22,5 +29,11 @@ public class PlayerStats : MonoBehaviour
             startScale.y,
             startScale.z * grow
         );
+
+        if (weight >= overweightLimit && !overweightPopupShown)
+        {
+            overweightPopupShown = true;
+            FindFirstObjectByType<PopupButtons>(FindObjectsInactive.Include).ShowPopup();
+        }
     }
 }

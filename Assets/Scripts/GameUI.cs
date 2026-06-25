@@ -7,6 +7,8 @@ public class GameUI : MonoBehaviour
 
     public TextMeshProUGUI coinText;
     int coins = 0;
+    float birdViewReminderCooldown = 30f;
+    float lastBirdViewReminderTime = -999f;
 
     void Awake()
     {
@@ -22,7 +24,13 @@ public class GameUI : MonoBehaviour
     {
         coins += amount;
         UpdateUI();
-    }
+
+        if (coins >= 6 && Time.time - lastBirdViewReminderTime >= birdViewReminderCooldown)
+        {
+            lastBirdViewReminderTime = Time.time;
+            FindFirstObjectByType<GameManager>().ShowBirdViewPopup();
+        }
+    }   
 
     public bool SpendCoins(int amount)
     {

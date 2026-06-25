@@ -7,10 +7,14 @@ public class GameManager : MonoBehaviour
     public GameObject restartButton;
     public GameObject loseText;
     public GameObject continueButton;
+    public GameObject pauseButton;
+    public GameObject pausePanel;
+    public GameObject birdViewPopup;
     public TMPro.TextMeshProUGUI timerText;
     public PlayerMovement playerMovement;
     public GameObject winCelebration;
     public ParticleSystem winParticles;
+    public GoalFlagVisibility goalFlagVisibility;
     public float timerDuration = 60f;
 
     private int needCoinsCount = 0;
@@ -26,6 +30,8 @@ public class GameManager : MonoBehaviour
         restartButton.SetActive(false);
         loseText.SetActive(false);
         continueButton.SetActive(false);
+        pauseButton.SetActive(false);
+        birdViewPopup.SetActive(false);
         currentTimer = timerDuration;
         timerText.text = "";
 
@@ -34,11 +40,28 @@ public class GameManager : MonoBehaviour
     }
 
     public void StartGame()
-    {
-        startMenu.SetActive(false);
+   {
+    startMenu.SetActive(false);
+    
+    pauseButton.SetActive(true);
 
-        if (playerMovement != null)
-            playerMovement.enabled = true;
+    if (goalFlagVisibility != null)
+        goalFlagVisibility.HideFlag();
+
+    if (playerMovement != null)
+        playerMovement.enabled = true;
+    }
+
+    public void ShowBirdViewPopup()
+    {
+        birdViewPopup.SetActive(true);
+        StartCoroutine(HideBirdViewPopupAfterDelay());
+    }
+    System.Collections.IEnumerator HideBirdViewPopupAfterDelay()
+    {
+        yield return new WaitForSeconds(4f);
+
+        birdViewPopup.SetActive(false);
     }
 
     public void ShowNeedCoins()
@@ -93,7 +116,8 @@ public class GameManager : MonoBehaviour
 
         loseText.SetActive(false);
         continueButton.SetActive(false);
-        restartButton.SetActive(false);
+        restartButton.SetActive(true);
+        pauseButton.SetActive(false);
 
         if (winCelebration != null)
             winCelebration.SetActive(true);
@@ -108,12 +132,27 @@ public class GameManager : MonoBehaviour
             playerMovement.enabled = false;
     }
     void Update()
-    {
+   {
+        if (startMenu.activeSelf && Input.GetKeyDown(KeyCode.Return))
+        {
+            StartGame();
+        }
+
+        if (restartButton.activeSelf && Input.GetKeyDown(KeyCode.Return))
+        {
+          RestartGame();
+        }
+
+         if (continueButton.activeSelf && Input.GetKeyDown(KeyCode.Return))
+        {
+          ContinueGame();
+        }
+
         if (canContinueAfterDelay && loseText.activeSelf)
         {
         if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
             {
-                ContinueGame();
+             ContinueGame();
             }
         }
 
@@ -125,25 +164,26 @@ public class GameManager : MonoBehaviour
             timerText.text = "Time: " + timeInt;
 
         if (timeInt <= 10)
-            {
-                timerText.color = Color.red;
-            }
+        {
+            timerText.color = Color.red;
+        }
         else
-            {
-                timerText.color = new Color(1f, 0.84f, 0.3f);
-            }
+        {
+            timerText.color = new Color(1f, 0.84f, 0.3f);
+        }
 
         if (currentTimer <= 0)
-            {
-                currentTimer = 0;
-                timerText.text = "Time: 0";
-                TimerFinished();
-            }
+        {
+            currentTimer = 0;
+            timerText.text = "Time: 0";
+            TimerFinished();
+        }
         }
     }
 
     public void RestartGame()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -154,14 +194,28 @@ public class GameManager : MonoBehaviour
 
         loseText.SetActive(true);
         loseText.GetComponent<TMPro.TextMeshProUGUI>().text = "Time's Up! You Lost!";
-
+        
         continueButton.SetActive(false);
         restartButton.SetActive(true);
+        pauseButton.SetActive(false);
 
         if (playerMovement != null)
             playerMovement.enabled = false;
     }
+    
+    public void PauseGame()
+    {
+        Time.timeScale = 0f;
+        pausePanel.SetActive(true);
+        pauseButton.SetActive(false);
+    }
 
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f;
+        pausePanel.SetActive(false);
+        pauseButton.SetActive(true);
+    }
     System.Collections.IEnumerator AllowContinueAfterDelay()
     {
         yield return new WaitForSeconds(2f);
