@@ -16,6 +16,15 @@ public class GameManager : MonoBehaviour
     public ParticleSystem winParticles;
     public GoalFlagVisibility goalFlagVisibility;
     public float timerDuration = 60f;
+    public float timerIntroDuration = 2f;
+    public float timerIntroFontSize = 110f;
+
+    private RectTransform timerRect;
+    private Vector2 timerOriginalAnchorMin;
+    private Vector2 timerOriginalAnchorMax;
+    private Vector2 timerOriginalPivot;
+    private Vector2 timerOriginalPosition;
+    private float timerOriginalFontSize;
 
     private int needCoinsCount = 0;
 
@@ -34,6 +43,13 @@ public class GameManager : MonoBehaviour
         birdViewPopup.SetActive(false);
         currentTimer = timerDuration;
         timerText.text = "";
+        timerRect = timerText.rectTransform;
+
+        timerOriginalAnchorMin = timerRect.anchorMin;
+        timerOriginalAnchorMax = timerRect.anchorMax;
+        timerOriginalPivot = timerRect.pivot;
+        timerOriginalPosition = timerRect.anchoredPosition;
+        timerOriginalFontSize = timerText.fontSize;
 
         if (playerMovement != null)
             playerMovement.enabled = false;
@@ -97,9 +113,10 @@ public class GameManager : MonoBehaviour
         if (playerMovement != null)
         playerMovement.enabled = true;
 
-         if (!timerStarted)
+        if (!timerStarted)
         {
             timerStarted = true;
+            StartCoroutine(ShowTimerIntro());
         }
         timerText.text = "Time: " + Mathf.Ceil(currentTimer).ToString();
     }
@@ -221,5 +238,39 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         canContinueAfterDelay = true;
+    }
+    System.Collections.IEnumerator ShowTimerIntro()
+ {
+    // Move timer to the center of the screen.
+    timerRect.anchorMin = new Vector2(0.5f, 0.5f);
+    timerRect.anchorMax = new Vector2(0.5f, 0.5f);
+    timerRect.pivot = new Vector2(0.5f, 0.5f);
+    timerRect.anchoredPosition = Vector2.zero;
+
+    timerText.fontSize = timerIntroFontSize;
+    timerText.alignment = TMPro.TextAlignmentOptions.Center;
+
+    float elapsed = 0f;
+
+    while (elapsed < timerIntroDuration)
+    {
+        elapsed += Time.deltaTime;
+
+        // Creates a small bouncing/pulsing effect.
+        float bounce = 1f + Mathf.Sin(elapsed * 12f) * 0.12f;
+        timerRect.localScale = Vector3.one * bounce;
+
+        yield return null;
+    }
+
+    // Return timer to its normal top-right position.
+    timerRect.anchorMin = timerOriginalAnchorMin;
+    timerRect.anchorMax = timerOriginalAnchorMax;
+    timerRect.pivot = timerOriginalPivot;
+    timerRect.anchoredPosition = timerOriginalPosition;
+
+    timerText.fontSize = timerOriginalFontSize;
+    timerText.alignment = TMPro.TextAlignmentOptions.Center;
+    timerRect.localScale = Vector3.one;
     }
 }
